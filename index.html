@@ -360,12 +360,44 @@
       .countdown-separator { font-size: 2rem; }
       .sessions { grid-template-columns: 1fr; }
     }
+    .scatter {
+      position: fixed;
+      right: 10px;
+      top: 0;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+    .scatter span {
+      position: absolute;
+      font-family: 'Georgia', serif;
+      font-size: 1.5rem;
+      color: #f5c518;
+      opacity: 0.18;
+    }
+    @media (max-width: 600px) {
+      .scatter { display: none; }
+    }
   </style>
 </head>
 <body>
   <div class="splash" id="splash">
     <img src="https://1000logos.net/wp-content/uploads/2016/10/Batman-Logo-1.png" alt="Batman Logo">
     <div class="splash-text">37</div>
+  </div>
+
+  <div class="scatter">
+    <span style="top:8%;right:0;">x</span>
+    <span style="top:18%;right:5px;font-size:2rem;">a</span>
+    <span style="top:30%;right:2px;font-size:1.2rem;">b</span>
+    <span style="top:42%;right:8px;font-size:1.8rem;">c</span>
+    <span style="top:55%;right:3px;">s</span>
+    <span style="top:65%;right:6px;font-size:2.2rem;">q</span>
+    <span style="top:78%;right:1px;">w</span>
+    <span style="top:88%;right:7px;font-size:1.3rem;">z</span>
+    <span style="top:12%;right:12px;font-size:1.1rem;">t</span>
+    <span style="top:48%;right:14px;font-size:1rem;">m</span>
   </div>
 
   <div class="container" id="site-content">
