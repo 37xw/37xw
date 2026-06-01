@@ -278,29 +278,55 @@
     </header>
 
     <div class="countdown-section">
-      <h2 id="countdown-title">TYT'ye Kalan Süre</h2>
-      <div class="countdown" id="countdown">
+      <h2>TYT'ye Kalan Süre</h2>
+      <div class="countdown">
         <div class="countdown-item">
-          <span class="number" id="days">00</span>
+          <span class="number" id="tyt-days">00</span>
           <span class="label">Gün</span>
         </div>
         <span class="countdown-separator">:</span>
         <div class="countdown-item">
-          <span class="number" id="hours">00</span>
+          <span class="number" id="tyt-hours">00</span>
           <span class="label">Saat</span>
         </div>
         <span class="countdown-separator">:</span>
         <div class="countdown-item">
-          <span class="number" id="minutes">00</span>
+          <span class="number" id="tyt-minutes">00</span>
           <span class="label">Dakika</span>
         </div>
         <span class="countdown-separator">:</span>
         <div class="countdown-item">
-          <span class="number" id="seconds">00</span>
+          <span class="number" id="tyt-seconds">00</span>
           <span class="label">Saniye</span>
         </div>
       </div>
-      <p class="info-text">2026 TYT: <strong>20 Haziran 2026 Cumartesi</strong> &nbsp;|&nbsp; 2026 AYT/YDT: <strong>21 Haziran 2026 Pazar</strong></p>
+      <p class="info-text">20 Haziran 2026 Cumartesi · 10:15</p>
+    </div>
+
+    <div class="countdown-section">
+      <h2>AYT'ye Kalan Süre</h2>
+      <div class="countdown">
+        <div class="countdown-item">
+          <span class="number" id="ayt-days">00</span>
+          <span class="label">Gün</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-item">
+          <span class="number" id="ayt-hours">00</span>
+          <span class="label">Saat</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-item">
+          <span class="number" id="ayt-minutes">00</span>
+          <span class="label">Dakika</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-item">
+          <span class="number" id="ayt-seconds">00</span>
+          <span class="label">Saniye</span>
+        </div>
+      </div>
+      <p class="info-text">21 Haziran 2026 Pazar · 10:15</p>
     </div>
 
     <div class="sessions">
@@ -345,26 +371,29 @@
   </div>
 
   <script>
-    const examDate = new Date('2026-06-20T10:15:00+03:00');
+    const dates = [
+      { name: 'tyt', date: new Date('2026-06-20T10:15:00+03:00') },
+      { name: 'ayt', date: new Date('2026-06-21T10:15:00+03:00') },
+    ];
     function updateCountdown() {
       const now = new Date();
-      const diff = examDate - now;
-      if (diff <= 0) {
-        document.getElementById('days').textContent = '00';
-        document.getElementById('hours').textContent = '00';
-        document.getElementById('minutes').textContent = '00';
-        document.getElementById('seconds').textContent = '00';
-        return;
+      for (const { name, date } of dates) {
+        const diff = date - now;
+        let days, hours, minutes, seconds;
+        if (diff <= 0) {
+          days = hours = minutes = seconds = '00';
+        } else {
+          const totalSeconds = Math.floor(diff / 1000);
+          days = String(Math.floor(totalSeconds / 86400)).padStart(2, '0');
+          hours = String(Math.floor((totalSeconds % 86400) / 3600)).padStart(2, '0');
+          minutes = String(Math.floor((totalSeconds % 3600) / 60)).padStart(2, '0');
+          seconds = String(totalSeconds % 60).padStart(2, '0');
+        }
+        document.getElementById(`${name}-days`).textContent = days;
+        document.getElementById(`${name}-hours`).textContent = hours;
+        document.getElementById(`${name}-minutes`).textContent = minutes;
+        document.getElementById(`${name}-seconds`).textContent = seconds;
       }
-      const totalSeconds = Math.floor(diff / 1000);
-      const days = Math.floor(totalSeconds / 86400);
-      const hours = Math.floor((totalSeconds % 86400) / 3600);
-      const minutes = Math.floor((totalSeconds % 3600) / 60);
-      const seconds = totalSeconds % 60;
-      document.getElementById('days').textContent = String(days).padStart(2, '0');
-      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
     }
     updateCountdown();
     setInterval(updateCountdown, 1000);
