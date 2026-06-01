@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 YKS Sayaç | YKS'ye Kaç Gün Kaldı?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: #0a0a0a;
+      color: #c0c0c0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-image: radial-gradient(ellipse at 50% 0%, #1a1a1a 0%, #0a0a0a 70%);
+    }
+    .container {
+      max-width: 900px;
+      width: 100%;
+      padding: 40px 24px;
+    }
+    header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    header h1 {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #f5c518;
+      text-shadow: 0 0 40px rgba(245,197,24,0.15);
+      margin-bottom: 8px;
+      letter-spacing: 2px;
+    }
+    header p {
+      font-size: 1.1rem;
+      color: #666;
+      font-weight: 500;
+    }
+    .countdown-section {
+      background: linear-gradient(145deg, #111, #0d0d0d);
+      border-radius: 24px;
+      padding: 48px 32px;
+      text-align: center;
+      margin-bottom: 40px;
+      border: 1px solid #f5c51822;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.8), inset 0 1px 0 #f5c51811;
+      position: relative;
+      overflow: hidden;
+    }
+    .countdown-section::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, #f5c51808 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .countdown-section h2 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #f5c518;
+      margin-bottom: 24px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+    .countdown {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .countdown-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 100px;
+    }
+    .countdown-item .number {
+      font-size: 4rem;
+      font-weight: 900;
+      line-height: 1;
+      color: #f5c518;
+      text-shadow: 0 0 30px rgba(245,197,24,0.2);
+    }
+    .countdown-item .label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #555;
+      margin-top: 8px;
+      font-weight: 700;
+    }
+    .countdown-separator {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #333;
+      align-self: flex-start;
+      padding-top: 4px;
+    }
+    .info-text {
+      margin-top: 20px;
+      color: #666;
+      font-size: 0.95rem;
+    }
+    .info-text strong {
+      color: #f5c518;
+    }
+    .sessions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .session-card {
+      background: #111;
+      border-radius: 16px;
+      padding: 28px 24px;
+      border: 1px solid #222;
+      transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    }
+    .session-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      border-color: #f5c51844;
+    }
+    .session-card .session-badge {
+      display: inline-block;
+      padding: 4px 14px;
+      border-radius: 0;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      margin-bottom: 16px;
+      border: 1px solid;
+    }
+    .session-card .session-badge.tyt { border-color: #f5c518; color: #f5c518; background: transparent; }
+    .session-card .session-badge.ayt { border-color: #f5c518; color: #f5c518; background: transparent; }
+    .session-card .session-badge.ydt { border-color: #f5c518; color: #f5c518; background: transparent; }
+    .session-card h3 {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      color: #e0e0e0;
+    }
+    .session-card .date {
+      color: #666;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+    .session-card .time {
+      color: #f5c518;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+    .session-card .duration {
+      color: #555;
+      font-size: 0.85rem;
+      margin-top: 6px;
+    }
+    .info-section {
+      background: #111;
+      border-radius: 16px;
+      padding: 32px 28px;
+      border: 1px solid #222;
+    }
+    .info-section h3 {
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #f5c518;
+    }
+    .info-section ul {
+      list-style: none;
+      padding: 0;
+    }
+    .info-section ul li {
+      padding: 8px 0;
+      color: #666;
+      border-bottom: 1px solid #1a1a1a;
+      font-size: 0.95rem;
+    }
+    .info-section ul li:last-child { border-bottom: none; }
+    .info-section ul li strong { color: #c0c0c0; }
+    footer {
+      text-align: center;
+      padding: 32px 0 16px;
+      color: #444;
+      font-size: 0.85rem;
+    }
+    .splash {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #0a0a0a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: opacity 0.6s, visibility 0.6s;
+    }
+    .splash.hidden {
+      opacity: 0;
+      visibility: hidden;
+    }
+    .splash img {
+      width: 200px;
+      height: auto;
+      filter: drop-shadow(0 0 40px rgba(245,197,24,0.3));
+      transition: transform 0.3s;
+    }
+    .splash:hover img {
+      transform: scale(1.08);
+    }
+    .splash-text {
+      position: absolute;
+      bottom: 60px;
+      color: #444;
+      font-size: 0.9rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .batman-logo {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+      width: 65px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.6s, transform 0.3s;
+    }
+    .batman-logo.show {
+      opacity: 0.9;
+      pointer-events: auto;
+    }
+    .batman-logo:hover {
+      transform: scale(1.1) rotate(-5deg);
+    }
+    .batman-logo img {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 0 12px rgba(245,197,24,0.3));
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      .batman-logo { width: 50px; top: 10px; right: 10px; }
+      .splash img { width: 140px; }
+      .container { padding: 24px 16px; }
+      header h1 { font-size: 1.6rem; }
+      .countdown-section { padding: 32px 16px; }
+      .countdown-item .number { font-size: 2.8rem; }
+      .countdown-item { min-width: 70px; }
+      .countdown-separator { font-size: 2rem; }
+      .sessions { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="splash" id="splash">
+    <img src="https://1000logos.net/wp-content/uploads/2016/10/Batman-Logo-1.png" alt="Batman Logo">
+    <div class="splash-text">37</div>
+  </div>
+
+  <div class="container" id="site-content">
+    <header>
+      <div class="batman-logo" id="corner-logo">
+        <img src="https://1000logos.net/wp-content/uploads/2016/10/Batman-Logo-1.png" alt="Batman Logo">
+      </div>
+      <h1>2026 YKS Sayaç</h1>
+      <p>YKS Kingoya kaç gün kaldığını takip et</p>
+    </header>
+
+    <div class="countdown-section">
+      <h2 id="countdown-title">TYT'ye Kalan Süre</h2>
+      <div class="countdown" id="countdown">
+        <div class="countdown-item">
+          <span class="number" id="days">00</span>
+          <span class="label">Gün</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-item">
+          <span class="number" id="hours">00</span>
+          <span class="label">Saat</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-item">
+          <span class="number" id="minutes">00</span>
+          <span class="label">Dakika</span>
+        </div>
+        <span class="countdown-separator">:</span>
+        <div class="countdown-item">
+          <span class="number" id="seconds">00</span>
+          <span class="label">Saniye</span>
+        </div>
+      </div>
+      <p class="info-text">2026 TYT: <strong>20 Haziran 2026 Cumartesi</strong> &nbsp;|&nbsp; 2026 AYT/YDT: <strong>21 Haziran 2026 Pazar</strong></p>
+    </div>
+
+    <div class="sessions">
+      <div class="session-card">
+        <span class="session-badge tyt">TYT</span>
+        <h3>Temel Yeterlilik Testi</h3>
+        <p class="date">20 Haziran 2026 · Cumartesi</p>
+        <p class="time">10:15</p>
+        <p class="duration">Süre: 165 dakika</p>
+      </div>
+      <div class="session-card">
+        <span class="session-badge ayt">AYT</span>
+        <h3>Alan Yeterlilik Testi</h3>
+        <p class="date">21 Haziran 2026 · Pazar</p>
+        <p class="time">10:15</p>
+        <p class="duration">Süre: 180 dakika</p>
+      </div>
+      <div class="session-card">
+        <span class="session-badge ydt">YDT</span>
+        <h3>Yabancı Dil Testi</h3>
+        <p class="date">21 Haziran 2026 · Pazar</p>
+        <p class="time">15:45</p>
+        <p class="duration">Süre: 120 dakika</p>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <h3>📅 2026 YKS Önemli Tarihler</h3>
+      <ul>
+        <li><strong>TYT:</strong> 20 Haziran 2026 Cumartesi · 10.15</li>
+        <li><strong>AYT:</strong> 21 Haziran 2026 Pazar · 10.15</li>
+        <li><strong>YDT:</strong> 21 Haziran 2026 Pazar · 15.45</li>
+        <li><strong>Başvuru Dönemi:</strong> Şubat - Mart 2026 (tahmini)</li>
+        <li><strong>Sonuç Açıklanması:</strong> Temmuz 2026 (tahmini)</li>
+      </ul>
+    </div>
+
+    <footer>
+      YKS Sayaç &copy; 2026 &mdash; Gerçek sınav tarihleri için ÖSYM'yi takip edin.
+      <br>efewer1x tarafından hazırlanmıştır.
+    </footer>
+  </div>
+
+  <script>
+    const examDate = new Date('2026-06-20T10:15:00+03:00');
+    function updateCountdown() {
+      const now = new Date();
+      const diff = examDate - now;
+      if (diff <= 0) {
+        document.getElementById('days').textContent = '00';
+        document.getElementById('hours').textContent = '00';
+        document.getElementById('minutes').textContent = '00';
+        document.getElementById('seconds').textContent = '00';
+        return;
+      }
+      const totalSeconds = Math.floor(diff / 1000);
+      const days = Math.floor(totalSeconds / 86400);
+      const hours = Math.floor((totalSeconds % 86400) / 3600);
+      const minutes = Math.floor((totalSeconds % 3600) / 60);
+      const seconds = totalSeconds % 60;
+      document.getElementById('days').textContent = String(days).padStart(2, '0');
+      document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+    }
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+
+    document.getElementById('splash').addEventListener('click', () => {
+      document.getElementById('splash').classList.add('hidden');
+      document.getElementById('corner-logo').classList.add('show');
+    });
+  </script>
+</body>
+</html>
