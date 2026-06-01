@@ -232,13 +232,7 @@
     }
     .info-section ul li:last-child { border-bottom: none; }
     .info-section ul li strong { color: #c0c0c0; }
-    .contact-section {
-      text-align: left;
-      padding: 16px 0 0;
-      margin-top: 24px;
-      margin-left: -24px;
-      border-top: 1px solid #1a1a1a;
-    }
+
     .contact-title {
       font-size: 0.85rem;
       font-weight: 700;
@@ -298,7 +292,7 @@
     .batman-logo {
       position: fixed;
       top: 20px;
-      right: 20px;
+      left: 20px;
       z-index: 100;
       width: 65px;
       opacity: 0;
@@ -318,8 +312,45 @@
       filter: drop-shadow(0 0 12px rgba(245,197,24,0.3));
       cursor: pointer;
     }
+    .batman-contact-popup {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 10px;
+      background: #111;
+      border: 1px solid #333;
+      padding: 14px 18px;
+      min-width: 200px;
+      display: none;
+      z-index: 101;
+    }
+    .batman-contact-popup.open {
+      display: block;
+    }
+    .batman-contact-popup .popup-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #f5c518;
+      letter-spacing: 3px;
+      margin-bottom: 8px;
+    }
+    .batman-contact-popup .popup-item {
+      font-size: 0.8rem;
+      color: #888;
+      margin-bottom: 4px;
+      white-space: nowrap;
+    }
+    .batman-contact-popup .popup-item:last-child {
+      margin-bottom: 0;
+    }
+    .batman-contact-popup .popup-tagline {
+      color: #f5c518;
+      font-style: italic;
+      font-size: 0.75rem;
+      margin-top: 6px;
+    }
     @media (max-width: 600px) {
-      .batman-logo { width: 50px; top: 10px; right: 10px; }
+      .batman-logo { width: 50px; top: 10px; left: 10px; }
       .splash img { width: 140px; }
       .container { padding: 24px 16px; }
       header h1 { font-size: 1.6rem; }
@@ -341,6 +372,13 @@
     <header>
       <div class="batman-logo" id="corner-logo">
         <img src="https://1000logos.net/wp-content/uploads/2016/10/Batman-Logo-1.png" alt="Batman Logo">
+        <div class="batman-contact-popup" id="contact-popup">
+          <div class="popup-title">CONTACT</div>
+          <div class="popup-item">mail : wer1x@mail.ru</div>
+          <div class="popup-item">wp.me : 44 7456 081588</div>
+          <div class="popup-item">discord : 37xw</div>
+          <div class="popup-tagline">daha ne vereyim ki</div>
+        </div>
       </div>
       <p>YKS Kingo Sayacı</p>
     </header>
@@ -449,13 +487,6 @@
       <br><br>
       YKS Sayaç &copy; 2026 &mdash; Gerçek sınav tarihleri için ÖSYM'yi takip edin.
       <br>efewer1x tarafından hazırlanmıştır.
-      <div class="contact-section">
-        <div class="contact-title">CONTACT</div>
-        <div class="contact-item">mail : wer1x@mail.ru</div>
-        <div class="contact-item">wp.me : 44 7456 081588</div>
-        <div class="contact-item">discord : 37xw</div>
-        <div class="contact-item" id="contact-tagline">daha ne vereyim ki</div>
-      </div>
     </footer>
   </div>
 
@@ -500,6 +531,14 @@
     document.getElementById('splash').addEventListener('click', () => {
       document.getElementById('splash').classList.add('hidden');
       document.getElementById('corner-logo').classList.add('show');
+    });
+
+    document.getElementById('corner-logo').addEventListener('click', (e) => {
+      document.getElementById('contact-popup').classList.toggle('open');
+      e.stopPropagation();
+    });
+    document.addEventListener('click', () => {
+      document.getElementById('contact-popup').classList.remove('open');
     });
   </script>
 </body>
