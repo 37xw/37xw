@@ -233,10 +233,14 @@
     .info-section ul li:last-child { border-bottom: none; }
     .info-section ul li strong { color: #c0c0c0; }
     .contact-section {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
       text-align: right;
-      padding: 16px 0;
-      border-top: 1px solid #1a1a1a;
-      margin-top: 40px;
+      padding: 12px 16px;
+      background: #0d0d0d;
+      border: 1px solid #222;
+      z-index: 50;
     }
     .contact-title {
       font-size: 0.85rem;
@@ -251,6 +255,11 @@
       margin-bottom: 4px;
     }
     .contact-item:last-child { margin-bottom: 0; }
+    #contact-tagline {
+      color: #f5c518;
+      margin-top: 8px;
+      font-style: italic;
+    }
     footer {
       text-align: center;
       padding: 32px 0 16px;
@@ -442,7 +451,7 @@
       <div class="contact-item">mail : wer1x@mail.ru</div>
       <div class="contact-item">wp.me : 44 7456 081588</div>
       <div class="contact-item">discord : 37xw</div>
-      <div class="contact-item" style="color:#f5c518;margin-top:8px;font-style:italic;">daha ne vereyim ki</div>
+      <div class="contact-item" id="contact-tagline">daha ne vereyim ki</div>
     </div>
 
     <footer>
