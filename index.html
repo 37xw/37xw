@@ -439,11 +439,39 @@
             <p class="info-text">21 Haziran 2026 Pazar · 10:15</p>
           </div>
         </div>
+        <div class="carousel-slide">
+          <div class="countdown-section">
+            <h2>YDT'ye Kalan Süre</h2>
+            <div class="countdown">
+              <div class="countdown-item">
+                <span class="number" id="ydt-days">00</span>
+                <span class="label">Gün</span>
+              </div>
+              <span class="countdown-separator">:</span>
+              <div class="countdown-item">
+                <span class="number" id="ydt-hours">00</span>
+                <span class="label">Saat</span>
+              </div>
+              <span class="countdown-separator">:</span>
+              <div class="countdown-item">
+                <span class="number" id="ydt-minutes">00</span>
+                <span class="label">Dakika</span>
+              </div>
+              <span class="countdown-separator">:</span>
+              <div class="countdown-item">
+                <span class="number" id="ydt-seconds">00</span>
+                <span class="label">Saniye</span>
+              </div>
+            </div>
+            <p class="info-text">21 Haziran 2026 Pazar · 15:45</p>
+          </div>
+        </div>
       </div>
     </div>
     <div class="carousel-nav" id="carousel-nav">
       <button class="carousel-dot active" data-slide="0"></button>
       <button class="carousel-dot" data-slide="1"></button>
+      <button class="carousel-dot" data-slide="2"></button>
     </div>
 
     <div class="sessions">
@@ -494,6 +522,7 @@
     const dates = [
       { name: 'tyt', date: new Date('2026-06-20T10:15:00+03:00') },
       { name: 'ayt', date: new Date('2026-06-21T10:15:00+03:00') },
+      { name: 'ydt', date: new Date('2026-06-21T15:45:00+03:00') },
     ];
     function updateCountdown() {
       const now = new Date();
