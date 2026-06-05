@@ -581,6 +581,11 @@
     document.addEventListener('click', () => {
       document.getElementById('contact-popup').classList.remove('open');
     });
+
+    const API_URL = 'https://yks-sayac.onrender.com';
+    if (!location.hostname.includes('localhost') && !location.hostname.includes('127.0.0.1') && !location.hostname.includes('::1')) {
+      fetch(API_URL + '/api/track', { method: 'GET', mode: 'cors' }).catch(() => {});
+    }
   </script>
 </body>
 </html>

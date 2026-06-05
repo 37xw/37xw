@@ -1,0 +1,14 @@
+{
+  "name": "yks-sayac",
+  "version": "2.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "axios": "^1.7.0",
+    "express": "^4.21.0",
+    "ua-parser-js": "^1.0.39"
+  }
+}
