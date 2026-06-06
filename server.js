@@ -275,7 +275,7 @@ app.get('/api/stats', basicAuth, (req, res) => {
   res.json({ total, uniqueIPs, deviceStats, countryStats, browserStats });
 });
 
-const SPOTIFY_PROFILE_URL = 'https://open.spotify.com/user/YOUR_USERNAME';
+const SPOTIFY_PROFILE_URL = 'https://open.spotify.com/user/zx9oehv0zw9qx96qowlby0ktl';
 
 async function logSpotifyVisit(req) {
   const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown';
