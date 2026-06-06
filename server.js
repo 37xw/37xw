@@ -7,6 +7,7 @@ const axios = require('axios');
 const app = express();
 const PORT = process.env.PORT || 3000;
 const VISITORS_FILE = path.join(__dirname, 'visitors.json');
+const VISITORS_SPOTIFY_FILE = path.join(__dirname, 'visitors-spotify.json');
 const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'yks2026';
 const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || '';
@@ -17,6 +18,15 @@ if (fs.existsSync(VISITORS_FILE)) {
     visitors = JSON.parse(fs.readFileSync(VISITORS_FILE, 'utf-8'));
   } catch (e) {
     visitors = [];
+  }
+}
+
+let visitorsSpotify = [];
+if (fs.existsSync(VISITORS_SPOTIFY_FILE)) {
+  try {
+    visitorsSpotify = JSON.parse(fs.readFileSync(VISITORS_SPOTIFY_FILE, 'utf-8'));
+  } catch (e) {
+    visitorsSpotify = [];
   }
 }
 
@@ -87,6 +97,9 @@ function identifyModel(vendor, model, os, sw, sh, dpr, exactModel) {
 function saveVisitors() {
   fs.writeFileSync(VISITORS_FILE, JSON.stringify(visitors, null, 2), 'utf-8');
 }
+function saveVisitorsSpotify() {
+  fs.writeFileSync(VISITORS_SPOTIFY_FILE, JSON.stringify(visitorsSpotify, null, 2), 'utf-8');
+}
 
 async function getGeoInfo(ip) {
   if (geoCache[ip]) return geoCache[ip];
@@ -107,14 +120,14 @@ async function getGeoInfo(ip) {
   return geoCache[ip];
 }
 
-async function sendDiscordNotification(entry) {
+async function sendDiscordNotification(entry, title = 'Yeni Ziyaretçi') {
   if (!DISCORD_WEBHOOK_URL) return;
   const flag = entry.country === 'Turkey' || entry.country === 'Türkiye' ? '🇹🇷' : '🌍';
   try {
     await axios.post(DISCORD_WEBHOOK_URL, {
       embeds: [{
-        title: 'Yeni Ziyaretçi',
-        color: 0xf5c518,
+        title,
+        color: title === 'Spotify Profil' ? 0x1DB954 : 0xf5c518,
         fields: [
           { name: '📍 Konum', value: `${flag} ${entry.city}, ${entry.country}`, inline: true },
           { name: '📱 Cihaz', value: `${entry.deviceModel}`, inline: true },
@@ -253,6 +266,102 @@ app.get('/api/stats', basicAuth, (req, res) => {
   const browserStats = {};
 
   visitors.forEach(v => {
+    deviceStats[v.device] = (deviceStats[v.device] || 0) + 1;
+    countryStats[v.country] = (countryStats[v.country] || 0) + 1;
+    const b = v.browser.split(' ')[0];
+    browserStats[b] = (browserStats[b] || 0) + 1;
+  });
+
+  res.json({ total, uniqueIPs, deviceStats, countryStats, browserStats });
+});
+
+const SPOTIFY_PROFILE_URL = 'https://open.spotify.com/user/YOUR_USERNAME';
+
+async function logSpotifyVisit(req) {
+  const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() || req.socket.remoteAddress || 'unknown';
+  const ua = req.headers['user-agent'] || '';
+  const parser = new UAParser(ua);
+  const browser = parser.getBrowser();
+  const os = parser.getOS();
+  const device = parser.getDevice();
+  const geo = await getGeoInfo(ip);
+
+  const sw = parseInt(req.query.sw);
+  const sh = parseInt(req.query.sh);
+  const dpr = parseFloat(req.query.dpr);
+
+  const entry = {
+    ip,
+    time: new Date().toISOString(),
+    device: device.type || 'desktop',
+    deviceModel: identifyModel(device.vendor, device.model, os.name, sw, sh, dpr, req.query.exact_model),
+    browser: `${browser.name || '?'} ${browser.version || ''}`,
+    os: `${os.name || '?'} ${os.version || ''}`,
+    country: geo.country,
+    city: geo.city,
+    isp: geo.isp,
+    referrer: req.headers['referer'] || '-',
+  };
+
+  visitorsSpotify.unshift(entry);
+  if (visitorsSpotify.length > 5000) visitorsSpotify.length = 5000;
+  saveVisitorsSpotify();
+  sendDiscordNotification({ ...entry, source: 'spotify' }, 'Spotify Profil');
+}
+
+app.get('/redirect/spotify', async (req, res) => {
+  await logSpotifyVisit(req);
+  res.redirect(302, SPOTIFY_PROFILE_URL);
+});
+
+app.get('/admin/spotify', basicAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin-spotify.html'));
+});
+
+app.get('/api/visitors-spotify', basicAuth, (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 50;
+  const search = (req.query.search || '').toLowerCase();
+  const filterDevice = req.query.device || '';
+
+  let filtered = visitorsSpotify;
+  if (search) {
+    filtered = filtered.filter(v =>
+      v.ip.toLowerCase().includes(search) ||
+      v.country.toLowerCase().includes(search) ||
+      v.city.toLowerCase().includes(search) ||
+      v.browser.toLowerCase().includes(search) ||
+      v.os.toLowerCase().includes(search) ||
+      v.isp.toLowerCase().includes(search) ||
+      (v.deviceModel && v.deviceModel.toLowerCase().includes(search))
+    );
+  }
+  if (filterDevice) {
+    filtered = filtered.filter(v => v.device === filterDevice);
+  }
+
+  const total = filtered.length;
+  const totalPages = Math.ceil(total / limit);
+  const start = (page - 1) * limit;
+  const data = filtered.slice(start, start + limit);
+
+  res.json({ data, total, page, totalPages });
+});
+
+app.delete('/api/visitors-spotify', basicAuth, (req, res) => {
+  visitorsSpotify = [];
+  saveVisitorsSpotify();
+  res.json({ ok: true, message: 'Spotify kayıtları silindi.' });
+});
+
+app.get('/api/stats-spotify', basicAuth, (req, res) => {
+  const total = visitorsSpotify.length;
+  const uniqueIPs = new Set(visitorsSpotify.map(v => v.ip)).size;
+  const deviceStats = {};
+  const countryStats = {};
+  const browserStats = {};
+
+  visitorsSpotify.forEach(v => {
     deviceStats[v.device] = (deviceStats[v.device] || 0) + 1;
     countryStats[v.country] = (countryStats[v.country] || 0) + 1;
     const b = v.browser.split(' ')[0];
