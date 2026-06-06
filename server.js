@@ -84,12 +84,12 @@ const MODEL_MAP = {
 
 const APPLE_DEVICES = [
   { match: '320x568@2', model: 'iPhone SE 1', osRange: [9, 10, 11, 12, 13, 14, 15] },
-  { match: '375x667@2', model: 'iPhone SE 3', osRange: [15, 16, 17, 18] },
+  { match: '375x667@2', model: 'iPhone SE 3', osRange: [16, 17, 18] },
   { match: '375x667@2', model: 'iPhone SE 2', osRange: [13, 14] },
   { match: '375x667@2', model: 'iPhone 8', osRange: [11, 12] },
-  { match: '375x667@2', model: 'iPhone 7', osRange: [10] },
+  { match: '375x667@2', model: 'iPhone 7', osRange: [10, 15] },
   { match: '375x667@2', model: 'iPhone 6s', osRange: [9] },
-  { match: '414x736@3', model: 'iPhone 8 Plus', osRange: [11, 12] },
+  { match: '414x736@3', model: 'iPhone 8 Plus', osRange: [11, 12, 13, 14, 15, 16] },
   { match: '414x736@3', model: 'iPhone 7 Plus', osRange: [10] },
   { match: '414x736@3', model: 'iPhone 6s Plus', osRange: [9] },
   { match: '375x812@3', model: 'iPhone 11 Pro', osRange: [13, 14, 15, 16, 17, 18] },
