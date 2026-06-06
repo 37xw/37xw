@@ -166,13 +166,6 @@
             <th>Tarayıcı</th>
             <th>İşletim Sistemi</th>
             <th>ISS</th>
-            <th>Dil</th>
-            <th>Saat Dilimi</th>
-            <th>RAM</th>
-            <th>Çekirdek</th>
-            <th>Bağlantı</th>
-            <th>Pil</th>
-            <th>Ekran</th>
             <th>Yönlendiren</th>
           </tr>
         </thead>
@@ -264,13 +257,6 @@
           <td>${v.browser}</td>
           <td>${v.os}</td>
           <td style="font-size:0.78rem;color:#555;">${v.isp || '?'}</td>
-          <td style="font-size:0.78rem;">${v.lang && v.lang !== '?' ? v.lang : '-'}</td>
-          <td style="font-size:0.78rem;color:#555;">${v.tz && v.tz !== '?' ? v.tz : '-'}</td>
-          <td>${v.ram && v.ram !== '?' ? v.ram + 'GB' : '-'}</td>
-          <td>${v.cores || '-'}</td>
-          <td>${v.net && v.net !== '?' ? v.net : '-'}</td>
-          <td>${v.battery && v.battery !== '?' ? v.battery + '%' : '-'}</td>
-          <td>${v.orientation || '?'}</td>
           <td class="ref" title="${v.referrer}">${v.referrer}</td>
         </tr>`;
       }).join('');

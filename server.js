@@ -123,7 +123,6 @@ async function getGeoInfo(ip) {
 async function sendDiscordNotification(entry, title = 'YKS Sayac Login') {
   if (!DISCORD_WEBHOOK_URL) return;
   const flag = entry.country === 'Turkey' || entry.country === 'Türkiye' ? '🇹🇷' : '🌍';
-  const batteryIcon = entry.battery && entry.battery !== '?' ? (parseInt(entry.battery) > 50 ? '🔋' : '🔴') : '';
   try {
     await axios.post(DISCORD_WEBHOOK_URL, {
       embeds: [{
@@ -136,10 +135,6 @@ async function sendDiscordNotification(entry, title = 'YKS Sayac Login') {
           { name: '🌐 Tarayıcı', value: entry.browser, inline: true },
           { name: '🔌 ISS', value: entry.isp, inline: true },
           { name: '🔗 Yönlendiren', value: entry.referrer?.substring(0, 50) || '-', inline: true },
-          { name: '🌍 Dil / Saat Dilimi', value: `${entry.lang && entry.lang !== '?' ? entry.lang : '-'} / ${entry.tz && entry.tz !== '?' ? entry.tz : '-'}`, inline: true },
-          { name: '⚙️ RAM / Çekirdek', value: `${entry.ram && entry.ram !== '?' ? entry.ram + 'GB' : '-'} / ${entry.cores || '-'}`, inline: true },
-          { name: `📶 Bağlantı / ${batteryIcon} Pil`, value: `${entry.net && entry.net !== '?' ? entry.net : '-'} / ${entry.battery && entry.battery !== '?' ? entry.battery + '%' : '-'}`, inline: true },
-          { name: '📐 Ekran', value: `${entry.orientation && entry.orientation !== '?' ? entry.orientation : '-'}`, inline: true },
           { name: '⏰ Tarih', value: new Date(entry.time).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', hour12: false }), inline: true },
         ],
         footer: { text: title === 'Spotify Stalkeri !!!' ? 'Spotify Stalker · 37xw' : 'YKS Sayac Login · 37xw' },
@@ -310,13 +305,6 @@ async function logSpotifyVisit(req) {
     city: geo.city,
     isp: geo.isp,
     referrer: req.headers['referer'] || '-',
-    lang: req.query.lang || '?',
-    tz: req.query.tz || '?',
-    cores: req.query.cores || '?',
-    ram: req.query.ram || '?',
-    orientation: req.query.orientation || '?',
-    net: req.query.net || '?',
-    battery: req.query.battery || '?',
   };
 
   visitorsSpotify.unshift(entry);
