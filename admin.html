@@ -162,6 +162,7 @@
             <th>IP</th>
             <th>Ülke</th>
             <th>Şehir</th>
+            <th>Konum</th>
             <th>Cihaz</th>
             <th>Model</th>
             <th>Tarayıcı</th>
@@ -253,6 +254,7 @@
           <td class="ip">${v.ip}</td>
           <td class="country">${v.country || '?'}</td>
           <td>${v.city || '?'}</td>
+          <td>${v.lat && v.lon ? `<a href="https://www.google.com/maps?q=${v.lat},${v.lon}" target="_blank" style="color:#f5c518;font-size:0.78rem;">🗺️ Harita</a>` : '-'}</td>
           <td><span class="badge ${deviceClass}">${v.device}</span></td>
           <td style="color:#888;font-size:0.82rem;">${v.deviceModel || '-'}</td>
           <td>${v.browser}</td>
