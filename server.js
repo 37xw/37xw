@@ -178,6 +178,12 @@ app.get('/api/visitors', basicAuth, (req, res) => {
   res.json({ data, total, page, totalPages });
 });
 
+app.delete('/api/visitors', basicAuth, (req, res) => {
+  visitors = [];
+  saveVisitors();
+  res.json({ ok: true, message: 'Tüm kayıtlar silindi.' });
+});
+
 app.get('/api/stats', basicAuth, (req, res) => {
   const total = visitors.length;
   const uniqueIPs = new Set(visitors.map(v => v.ip)).size;
