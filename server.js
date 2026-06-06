@@ -67,6 +67,7 @@ async function logVisit(req, source) {
     ip,
     time: new Date().toISOString(),
     device: device.type || 'desktop',
+    deviceModel: [device.vendor, device.model].filter(Boolean).join(' ') || '-',
     browser: `${browser.name || '?'} ${browser.version || ''}`,
     os: `${os.name || '?'} ${os.version || ''}`,
     country: geo.country,
@@ -127,7 +128,8 @@ app.get('/api/visitors', basicAuth, (req, res) => {
       v.city.toLowerCase().includes(search) ||
       v.browser.toLowerCase().includes(search) ||
       v.os.toLowerCase().includes(search) ||
-      v.isp.toLowerCase().includes(search)
+      v.isp.toLowerCase().includes(search) ||
+      (v.deviceModel && v.deviceModel.toLowerCase().includes(search))
     );
   }
   if (filterDevice) {

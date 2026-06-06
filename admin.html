@@ -162,6 +162,7 @@
             <th>Ülke</th>
             <th>Şehir</th>
             <th>Cihaz</th>
+            <th>Model</th>
             <th>Tarayıcı</th>
             <th>İşletim Sistemi</th>
             <th>ISS</th>
@@ -252,6 +253,7 @@
           <td class="country">${v.country || '?'}</td>
           <td>${v.city || '?'}</td>
           <td><span class="badge ${deviceClass}">${v.device}</span></td>
+          <td style="color:#888;font-size:0.82rem;">${v.deviceModel || '-'}</td>
           <td>${v.browser}</td>
           <td>${v.os}</td>
           <td style="font-size:0.78rem;color:#555;">${v.isp || '?'}</td>
