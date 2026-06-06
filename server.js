@@ -42,24 +42,73 @@ const MODEL_MAP = {
   'iPhone15,2': 'iPhone 14 Pro', 'iPhone15,3': 'iPhone 14 Pro Max',
   'iPhone15,4': 'iPhone 15', 'iPhone15,5': 'iPhone 15 Plus',
   'iPhone16,1': 'iPhone 15 Pro', 'iPhone16,2': 'iPhone 15 Pro Max',
+  'iPhone17,1': 'iPhone 16 Pro Max', 'iPhone17,2': 'iPhone 16 Pro',
+  'iPhone17,3': 'iPhone 16 Plus', 'iPhone17,4': 'iPhone 16',
+  'iPhone17,5': 'iPhone SE 4',
+
+  'SM-S938B': 'Galaxy S25 Ultra', 'SM-S938U': 'Galaxy S25 Ultra', 'SM-S938N': 'Galaxy S25 Ultra',
+  'SM-S937B': 'Galaxy S25+', 'SM-S936B': 'Galaxy S25', 'SM-S931B': 'Galaxy S25',
+  'SM-S932B': 'Galaxy S25+',
+  'SM-S928B': 'Galaxy S24 Ultra', 'SM-S928U': 'Galaxy S24 Ultra',
+  'SM-S927B': 'Galaxy S24+', 'SM-S926B': 'Galaxy S24', 'SM-S921B': 'Galaxy S24',
+  'SM-S926U': 'Galaxy S24',
+  'SM-S918B': 'Galaxy S23 Ultra', 'SM-S918U': 'Galaxy S23 Ultra',
+  'SM-S917B': 'Galaxy S23+', 'SM-S916B': 'Galaxy S23', 'SM-S911B': 'Galaxy S23',
+  'SM-S908B': 'Galaxy S22 Ultra', 'SM-S906B': 'Galaxy S22+', 'SM-S901B': 'Galaxy S22',
+  'SM-N986B': 'Galaxy Note 20 Ultra', 'SM-N981B': 'Galaxy Note 20',
+  'SM-F958B': 'Galaxy Z Fold 7', 'SM-F956B': 'Galaxy Z Fold 6',
+  'SM-F958U': 'Galaxy Z Fold 7', 'SM-F956U': 'Galaxy Z Fold 6',
+  'SM-F946B': 'Galaxy Z Fold 5', 'SM-F936B': 'Galaxy Z Fold 4', 'SM-F926B': 'Galaxy Z Fold 3',
+  'SM-F741B': 'Galaxy Z Flip 7', 'SM-F721B': 'Galaxy Z Flip 6',
+  'SM-F731B': 'Galaxy Z Flip 5', 'SM-F721B': 'Galaxy Z Flip 4', 'SM-F711B': 'Galaxy Z Flip 3',
+  'SM-A556B': 'Galaxy A55', 'SM-A546B': 'Galaxy A54', 'SM-A536B': 'Galaxy A53',
+  'SM-A356E': 'Galaxy A35', 'SM-A346B': 'Galaxy A34',
+  'SM-A256E': 'Galaxy A25', 'SM-A156E': 'Galaxy A15', 'SM-A055F': 'Galaxy A05',
+  'SM-A155F': 'Galaxy A15', 'SM-A145F': 'Galaxy A14',
+
+  'CPH2449': 'OnePlus 12', 'CPH2447': 'OnePlus 12R', 'CPH2581': 'OnePlus 13',
+  'CPH2413': 'OnePlus 11', 'CPH2399': 'OnePlus 10T', 'CPH2451': 'OnePlus Open',
+  'CPH2551': 'OnePlus 13',
+
+  'Pixel 9 Pro': 'Pixel 9 Pro', 'Pixel 9': 'Pixel 9', 'Pixel 9 Pro XL': 'Pixel 9 Pro XL',
+  'Pixel 8 Pro': 'Pixel 8 Pro', 'Pixel 8': 'Pixel 8', 'Pixel 8a': 'Pixel 8a',
+  'Pixel 7 Pro': 'Pixel 7 Pro', 'Pixel 7': 'Pixel 7', 'Pixel 7a': 'Pixel 7a',
+  'Pixel 6 Pro': 'Pixel 6 Pro', 'Pixel 6': 'Pixel 6', 'Pixel 6a': 'Pixel 6a',
+  'Pixel Fold': 'Pixel Fold', 'Pixel 9 Pro Fold': 'Pixel 9 Pro Fold',
+
+  '23127PN0CC': 'Xiaomi 14', '2312DRAABC': 'Xiaomi 14 Ultra',
+  '24031PN0DC': 'Xiaomi 14 Pro', '2312DRA51C': 'Xiaomi 14 Pro',
+  '22122RN99G': 'Xiaomi 13T', '2308CPXD0C': 'Xiaomi 13 Lite',
+  '2210132G': 'Xiaomi 12T',
 };
 
 const APPLE_DEVICES = [
-  { match: '320x568@2', model: 'iPhone SE 1', osRange: [0] },
-  { match: '375x667@2', model: 'iPhone 6s', osRange: [9, 10, 11, 12, 13, 14, 15] },
-  { match: '414x736@3', model: 'iPhone 6s Plus', osRange: [9, 10, 11, 12] },
+  { match: '320x568@2', model: 'iPhone SE 1', osRange: [9, 10, 11, 12] },
+  { match: '375x667@2', model: 'iPhone 6s/7/8/SE 2/3', osRange: [9, 10, 11, 12, 13, 14, 15, 16, 17, 18] },
+  { match: '414x736@3', model: 'iPhone 6s/7/8 Plus', osRange: [9, 10, 11, 12, 13, 14, 15] },
   { match: '375x812@3', model: 'iPhone X', osRange: [11, 12] },
-  { match: '414x896@2', model: 'iPhone XR', osRange: [12, 13] },
-  { match: '414x896@3', model: 'iPhone XS Max', osRange: [12, 13] },
-  { match: '360x780@3', model: 'iPhone 12 mini', osRange: [14, 15] },
+  { match: '375x812@3', model: 'iPhone XS', osRange: [12, 13, 14] },
+  { match: '375x812@3', model: 'iPhone 11 Pro', osRange: [13, 14, 15, 16, 17, 18] },
+  { match: '414x896@2', model: 'iPhone XR', osRange: [12, 13, 14, 15] },
+  { match: '414x896@2', model: 'iPhone 11', osRange: [13, 14, 15, 16, 17, 18] },
+  { match: '414x896@3', model: 'iPhone XS Max', osRange: [12, 13, 14] },
+  { match: '414x896@3', model: 'iPhone 11 Pro Max', osRange: [13, 14, 15, 16, 17, 18] },
+  { match: '360x780@3', model: 'iPhone 12 mini', osRange: [14] },
+  { match: '360x780@3', model: 'iPhone 13 mini', osRange: [15, 16, 17, 18] },
   { match: '390x844@3', model: 'iPhone 12', osRange: [14] },
-  { match: '428x926@3', model: 'iPhone 12 Pro Max', osRange: [14] },
-  { match: '393x852@3', model: 'iPhone 14 Pro', osRange: [16] },
-  { match: '430x932@3', model: 'iPhone 14 Pro Max', osRange: [16] },
   { match: '390x844@3', model: 'iPhone 13', osRange: [15] },
+  { match: '390x844@3', model: 'iPhone 14', osRange: [16, 17, 18] },
+  { match: '428x926@3', model: 'iPhone 12 Pro Max', osRange: [14] },
   { match: '428x926@3', model: 'iPhone 13 Pro Max', osRange: [15] },
-  { match: '393x852@3', model: 'iPhone 15', osRange: [17] },
-  { match: '430x932@3', model: 'iPhone 15 Plus', osRange: [17] },
+  { match: '428x926@3', model: 'iPhone 14 Plus', osRange: [16, 17, 18] },
+  { match: '393x852@3', model: 'iPhone 14 Pro', osRange: [16] },
+  { match: '393x852@3', model: 'iPhone 15 / 15 Pro', osRange: [17] },
+  { match: '393x852@3', model: 'iPhone 16', osRange: [18] },
+  { match: '430x932@3', model: 'iPhone 14 Pro Max', osRange: [16] },
+  { match: '430x932@3', model: 'iPhone 15 / 15 Pro Max', osRange: [17] },
+  { match: '430x932@3', model: 'iPhone 16 Plus', osRange: [18] },
+  { match: '402x874@3', model: 'iPhone 16 Pro', osRange: [18] },
+  { match: '440x956@3', model: 'iPhone 16 Pro Max', osRange: [18] },
   { match: '744x1133@2', model: 'iPad Mini 6' },
   { match: '820x1180@2', model: 'iPad Air 4/5 / iPad 10' },
   { match: '834x1194@2', model: 'iPad Pro 11' },
@@ -67,19 +116,19 @@ const APPLE_DEVICES = [
   { match: '810x1080@2', model: 'iPad 9' },
 ];
 
-const APPLE_DEVICES_FALLBACK = {
-  '320x568@2': 'iPhone SE 1',
-  '375x667@2': 'iPhone 6s/7/8/SE 2/3',
-  '414x736@3': 'iPhone 6s/7/8 Plus',
-  '375x812@3': 'iPhone X/XS/11 Pro',
-  '414x896@2': 'iPhone XR/11',
-  '414x896@3': 'iPhone XS Max/11 Pro Max',
-  '360x780@3': 'iPhone 12/13 mini',
-  '390x844@3': 'iPhone 12/13/14',
-  '428x926@3': 'iPhone 12 Pro Max/13 Pro Max/14 Plus',
-  '393x852@3': 'iPhone 14 Pro/15/15 Pro',
-  '430x932@3': 'iPhone 14 Pro Max/15 Plus/15 Pro Max',
-};
+const ANDROID_DEVICES = [
+  { match: '412x892@3.5', model: 'Galaxy S25 Ultra' },
+  { match: '412x892@3.5', model: 'Galaxy S24 Ultra' },
+  { match: '412x892@3.5', model: 'Galaxy S23 Ultra' },
+  { match: '393x830@3.5', model: 'Galaxy S24+' },
+  { match: '360x780@3', model: 'Galaxy S24 / S23 / S22' },
+  { match: '360x740@3', model: 'Galaxy A55 / A54 / A35' },
+  { match: '412x915@3.5', model: 'Pixel 9 Pro XL' },
+  { match: '412x832@3.5', model: 'Pixel 9 Pro' },
+  { match: '412x830@3.5', model: 'Pixel 9' },
+  { match: '412x846@3.5', model: 'Pixel 8 Pro' },
+  { match: '412x830@3.5', model: 'Pixel 8' },
+];
 
 function identifyModel(vendor, model, os, sw, sh, dpr, exactModel) {
   if (exactModel && MODEL_MAP[exactModel]) return MODEL_MAP[exactModel];
@@ -89,7 +138,12 @@ function identifyModel(vendor, model, os, sw, sh, dpr, exactModel) {
     const osMajor = os ? parseInt(os) : 0;
     const match = APPLE_DEVICES.find(d => d.match === key && (!d.osRange || d.osRange.includes(osMajor)));
     if (match) return match.model;
-    if (APPLE_DEVICES_FALLBACK[key]) return APPLE_DEVICES_FALLBACK[key];
+    return `iPhone (${key})`;
+  }
+  if (vendor && sw && sh && dpr) {
+    const key = `${sw}x${sh}@${dpr.toFixed(1)}`;
+    const androidMatch = ANDROID_DEVICES.find(d => d.match === key);
+    if (androidMatch) return androidMatch.model;
   }
   return [vendor, model].filter(Boolean).join(' ') || '-';
 }
@@ -177,6 +231,10 @@ async function logVisit(req, source) {
     deviceModel: identifyModel(device.vendor, device.model, os.version, sw, sh, dpr, req.query.exact_model),
     browser: `${browser.name || '?'} ${browser.version || ''}`,
     os: `${os.name || '?'} ${os.version || ''}`,
+    country: geo.country,
+    city: geo.city,
+    isp: geo.isp,
+    referrer: req.headers['referer'] || '-',
   };
 
   visitors.unshift(entry);
