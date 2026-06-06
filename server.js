@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 const VISITORS_FILE = path.join(__dirname, 'visitors.json');
 const ADMIN_USER = 'admin';
 const ADMIN_PASS = 'yks2026';
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL || '';
 
 let visitors = [];
 if (fs.existsSync(VISITORS_FILE)) {
@@ -106,6 +107,33 @@ async function getGeoInfo(ip) {
   return geoCache[ip];
 }
 
+async function sendDiscordNotification(entry) {
+  if (!DISCORD_WEBHOOK_URL) return;
+  const flag = entry.country === 'Turkey' || entry.country === 'Türkiye' ? '🇹🇷' : '🌍';
+  try {
+    await axios.post(DISCORD_WEBHOOK_URL, {
+      embeds: [{
+        title: 'Yeni Ziyaretçi',
+        color: 0xf5c518,
+        fields: [
+          { name: '📍 Konum', value: `${flag} ${entry.city}, ${entry.country}`, inline: true },
+          { name: '📱 Cihaz', value: `${entry.deviceModel}`, inline: true },
+          { name: '📟 Tür', value: entry.device, inline: true },
+          { name: '🌐 Tarayıcı', value: entry.browser, inline: true },
+          { name: '💻 İşletim Sistemi', value: entry.os, inline: true },
+          { name: '🔌 ISS', value: entry.isp, inline: true },
+          { name: '🔗 Yönlendiren', value: entry.referrer || '-', inline: false },
+          { name: '⏰ Tarih', value: new Date(entry.time).toLocaleString('tr-TR'), inline: true },
+        ],
+        footer: { text: 'YKS Sayaç · 37xw' },
+        timestamp: entry.time,
+      }]
+    });
+  } catch (e) {
+    console.error('Discord webhook error:', e.message);
+  }
+}
+
 app.use(express.static(__dirname, { index: false }));
 app.use(express.json());
 
@@ -146,6 +174,7 @@ async function logVisit(req, source) {
   visitors.unshift(entry);
   if (visitors.length > 5000) visitors.length = 5000;
   saveVisitors();
+  sendDiscordNotification(entry);
 }
 
 app.get('/api/track', async (req, res) => {
