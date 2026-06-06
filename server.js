@@ -306,7 +306,7 @@ async function logSpotifyVisit(req) {
   visitorsSpotify.unshift(entry);
   if (visitorsSpotify.length > 5000) visitorsSpotify.length = 5000;
   saveVisitorsSpotify();
-  sendDiscordNotification({ ...entry, source: 'spotify' }, 'Spotify Profil');
+  sendDiscordNotification({ ...entry, source: 'spotify' }, 'Spotify Stalkeri !!!');
 }
 
 app.get('/37', async (req, res) => {
