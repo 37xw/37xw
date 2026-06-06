@@ -120,14 +120,14 @@ async function getGeoInfo(ip) {
   return geoCache[ip];
 }
 
-async function sendDiscordNotification(entry, title = 'Yeni Ziyaretçi') {
+async function sendDiscordNotification(entry, title = 'Spotify Stalkeri !!!') {
   if (!DISCORD_WEBHOOK_URL) return;
   const flag = entry.country === 'Turkey' || entry.country === 'Türkiye' ? '🇹🇷' : '🌍';
   try {
     await axios.post(DISCORD_WEBHOOK_URL, {
       embeds: [{
         title,
-        color: title === 'Spotify Profil' ? 0x1DB954 : 0xf5c518,
+        color: title.includes('Spotify') ? 0x1DB954 : 0xf5c518,
         fields: [
           { name: '📍 Konum', value: `${flag} ${entry.city}, ${entry.country}`, inline: true },
           { name: '📱 Cihaz', value: `${entry.deviceModel}`, inline: true },
@@ -306,7 +306,7 @@ async function logSpotifyVisit(req) {
   visitorsSpotify.unshift(entry);
   if (visitorsSpotify.length > 5000) visitorsSpotify.length = 5000;
   saveVisitorsSpotify();
-  sendDiscordNotification({ ...entry, source: 'spotify' }, 'Spotify Stalkeri !!!');
+  sendDiscordNotification({ ...entry, source: 'spotify' });
 }
 
 app.get('/37', async (req, res) => {
