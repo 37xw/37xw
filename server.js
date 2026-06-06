@@ -174,14 +174,9 @@ async function logVisit(req, source) {
     ip,
     time: new Date().toISOString(),
     device: device.type || 'desktop',
-    deviceModel: identifyModel(device.vendor, device.model, os.name, sw, sh, dpr, req.query.exact_model),
+    deviceModel: identifyModel(device.vendor, device.model, os.version, sw, sh, dpr, req.query.exact_model),
     browser: `${browser.name || '?'} ${browser.version || ''}`,
     os: `${os.name || '?'} ${os.version || ''}`,
-    country: geo.country,
-    city: geo.city,
-    isp: geo.isp,
-    referrer: req.headers['referer'] || '-',
-    source,
   };
 
   visitors.unshift(entry);
@@ -299,7 +294,7 @@ async function logSpotifyVisit(req) {
     ip,
     time: new Date().toISOString(),
     device: device.type || 'desktop',
-    deviceModel: identifyModel(device.vendor, device.model, os.name, sw, sh, dpr, req.query.exact_model),
+    deviceModel: identifyModel(device.vendor, device.model, os.version, sw, sh, dpr, req.query.exact_model),
     browser: `${browser.name || '?'} ${browser.version || ''}`,
     os: `${os.name || '?'} ${os.version || ''}`,
     country: geo.country,
