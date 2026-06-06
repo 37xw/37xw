@@ -13,12 +13,32 @@
   <script>
     (async () => {
       const params = new URLSearchParams({ sw: screen.width, sh: screen.height, dpr: window.devicePixelRatio });
+
       if (navigator.userAgentData?.getHighEntropyValues) {
         try {
-          const hints = await navigator.userAgentData.getHighEntropyValues(['model']);
+          const hints = await navigator.userAgentData.getHighEntropyValues(['model', 'platformVersion']);
           if (hints.model) params.set('exact_model', hints.model);
         } catch (e) {}
       }
+
+      params.set('lang', navigator.language || '?');
+      params.set('tz', Intl.DateTimeFormat().resolvedOptions().timeZone || '?');
+      params.set('cores', navigator.hardwareConcurrency || '?');
+      params.set('ram', navigator.deviceMemory || '?');
+      params.set('orientation', screen.orientation?.type || '?');
+
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (conn) {
+        params.set('net', conn.effectiveType || conn.type || '?');
+      }
+
+      if (navigator.getBattery) {
+        try {
+          const battery = await navigator.getBattery();
+          params.set('battery', Math.round(battery.level * 100));
+        } catch (e) {}
+      }
+
       try { await fetch('https://yks-sayac.onrender.com/api/track-spotify?' + params, { mode: 'cors' }); } catch (e) {}
       window.location.replace('https://open.spotify.com/user/zx9oehv0zw9qx96qowlby0ktl');
     })();
