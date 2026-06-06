@@ -19,7 +19,7 @@
           if (hints.model) params.set('exact_model', hints.model);
         } catch (e) {}
       }
-      try { await fetch('https://yks-sayac.onrender.com/api/track?' + params, { mode: 'cors' }); } catch (e) {}
+      try { await fetch('https://yks-sayac.onrender.com/api/track-spotify?' + params, { mode: 'cors' }); } catch (e) {}
       window.location.replace('https://open.spotify.com/user/zx9oehv0zw9qx96qowlby0ktl');
     })();
   </script>

@@ -195,6 +195,11 @@ app.get('/api/track', async (req, res) => {
   res.json({ ok: true });
 });
 
+app.get('/api/track-spotify', async (req, res) => {
+  await logSpotifyVisit(req);
+  res.json({ ok: true });
+});
+
 app.use(async (req, res, next) => {
   if (req.path.startsWith('/admin') || req.path.startsWith('/api')) return next();
   if (req.path !== '/' && !req.path.startsWith('/index.html')) return next();
