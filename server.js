@@ -130,6 +130,7 @@ async function sendDiscordNotification(entry, title = 'YKS Sayac Login') {
         color: title.includes('Spotify') ? 0x1DB954 : 0xf5c518,
         fields: [
           { name: '📍 Konum', value: `${flag} ${entry.city}, ${entry.country}`, inline: true },
+          { name: '🆔 IP', value: entry.ip, inline: true },
           { name: '📱 Cihaz', value: `${entry.deviceModel || '-'}`, inline: true },
           { name: '💻 İşletim Sistemi', value: entry.os, inline: true },
           { name: '🌐 Tarayıcı', value: entry.browser, inline: true },
