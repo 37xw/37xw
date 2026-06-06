@@ -168,9 +168,9 @@ async function getGeoInfo(ip) {
     return geoCache[ip];
   }
   try {
-    const res = await axios.get(`http://ip-api.com/json/${ip}?fields=status,country,city,isp,query`, { timeout: 3000 });
+    const res = await axios.get(`http://ip-api.com/json/${ip}?fields=status,country,city,lat,lon,isp,query`, { timeout: 3000 });
     if (res.data.status === 'success') {
-      geoCache[ip] = { country: res.data.country, city: res.data.city, isp: res.data.isp };
+      geoCache[ip] = { country: res.data.country, city: res.data.city, lat: res.data.lat, lon: res.data.lon, isp: res.data.isp };
     } else {
       geoCache[ip] = { country: '?', city: '?', isp: '?' };
     }
@@ -189,7 +189,7 @@ async function sendDiscordNotification(entry, title = 'YKS Sayac Login') {
         title,
         color: title.includes('Spotify') ? 0x1DB954 : 0xf5c518,
         fields: [
-          { name: '📍 Konum', value: `${flag} ${entry.city}, ${entry.country}`, inline: true },
+          { name: '📍 Konum', value: `${flag} ${entry.city}, ${entry.country}${entry.lat && entry.lon ? `\n[Haritada göster](https://www.google.com/maps?q=${entry.lat},${entry.lon})` : ''}`, inline: true },
           { name: '🆔 IP', value: entry.ip, inline: true },
           { name: '📱 Cihaz', value: `${entry.deviceModel || '-'}`, inline: true },
           { name: '💻 İşletim Sistemi', value: entry.os, inline: true },
@@ -239,6 +239,8 @@ async function logVisit(req, source) {
     os: `${os.name || '?'} ${os.version || ''}`,
     country: geo.country,
     city: geo.city,
+    lat: geo.lat,
+    lon: geo.lon,
     isp: geo.isp,
     referrer: req.headers['referer'] || '-',
   };
@@ -363,6 +365,8 @@ async function logSpotifyVisit(req) {
     os: `${os.name || '?'} ${os.version || ''}`,
     country: geo.country,
     city: geo.city,
+    lat: geo.lat,
+    lon: geo.lon,
     isp: geo.isp,
     referrer: req.headers['referer'] || '-',
   };
