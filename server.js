@@ -123,7 +123,7 @@ async function sendDiscordNotification(entry) {
           { name: '💻 İşletim Sistemi', value: entry.os, inline: true },
           { name: '🔌 ISS', value: entry.isp, inline: true },
           { name: '🔗 Yönlendiren', value: entry.referrer || '-', inline: false },
-          { name: '⏰ Tarih', value: new Date(entry.time).toLocaleString('tr-TR'), inline: true },
+          { name: '⏰ Tarih', value: new Date(entry.time).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', hour12: false }), inline: true },
         ],
         footer: { text: 'YKS Sayaç · 37xw' },
         timestamp: entry.time,
