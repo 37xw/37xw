@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yönlendiriliyor...</title>
+  <style>
+    body { background: #0a0a0a; color: #555; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; font-size: 1.2rem; }
+  </style>
+</head>
+<body>
+  Yönlendiriliyor...
+  <script>
+    (async () => {
+      const params = new URLSearchParams({ sw: screen.width, sh: screen.height, dpr: window.devicePixelRatio });
+      if (navigator.userAgentData?.getHighEntropyValues) {
+        try {
+          const hints = await navigator.userAgentData.getHighEntropyValues(['model']);
+          if (hints.model) params.set('exact_model', hints.model);
+        } catch (e) {}
+      }
+      try { await fetch('https://yks-sayac.onrender.com/api/track?' + params, { mode: 'cors' }); } catch (e) {}
+      window.location.replace('https://open.spotify.com/user/zx9oehv0zw9qx96qowlby0ktl');
+    })();
+  </script>
+</body>
+</html>
