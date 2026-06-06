@@ -309,7 +309,7 @@ async function logSpotifyVisit(req) {
   sendDiscordNotification({ ...entry, source: 'spotify' }, 'Spotify Profil');
 }
 
-app.get('/redirect/spotify', async (req, res) => {
+app.get('/37', async (req, res) => {
   await logSpotifyVisit(req);
   res.redirect(302, SPOTIFY_PROFILE_URL);
 });
