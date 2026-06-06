@@ -205,23 +205,6 @@ function basicAuth(req, res, next) {
   return res.status(401).send('Hatalı giriş');
 }
 
-app.get('/api/test-webhook', basicAuth, async (req, res) => {
-  const testEntry = {
-    ip: '1.2.3.4',
-    time: new Date().toISOString(),
-    device: 'mobile',
-    deviceModel: 'iPhone 15 Pro Max',
-    browser: 'Chrome 125',
-    os: 'iOS 18.7',
-    country: 'Türkiye',
-    city: 'Yozgat',
-    isp: 'Turk Telekom',
-    referrer: 'test',
-  };
-  res.json({ webhookUrl: DISCORD_WEBHOOK_URL ? 'set' : 'NOT SET', sending: true });
-  await sendDiscordNotification(testEntry);
-});
-
 app.get('/admin', basicAuth, (req, res) => {
   res.sendFile(path.join(__dirname, 'admin.html'));
 });
