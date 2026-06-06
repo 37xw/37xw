@@ -303,6 +303,9 @@
       opacity: 0.9;
       pointer-events: auto;
     }
+    .batman-logo.show .arrow-hint {
+      opacity: 1;
+    }
     .batman-logo:hover {
       transform: scale(1.1) rotate(-5deg);
     }
@@ -311,6 +314,20 @@
       height: auto;
       filter: drop-shadow(0 0 12px rgba(245,197,24,0.3));
       cursor: pointer;
+    }
+    .arrow-hint {
+      position: absolute;
+      left: 75px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #f5c518;
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.6s;
+      white-space: nowrap;
+      font-weight: 600;
     }
     .batman-contact-popup {
       position: absolute;
@@ -373,6 +390,7 @@
     <header>
       <div class="batman-logo" id="corner-logo">
         <img src="https://1000logos.net/wp-content/uploads/2016/10/Batman-Logo-1.png" alt="Batman Logo">
+        <div class="arrow-hint">→ contact</div>
         <div class="batman-contact-popup" id="contact-popup">
           <div class="popup-title">CONTACT</div>
           <div class="popup-item">mail : wer1x@mail.ru</div>
