@@ -120,7 +120,7 @@ async function getGeoInfo(ip) {
   return geoCache[ip];
 }
 
-async function sendDiscordNotification(entry, title = 'Yeni Ziyaretçi') {
+async function sendDiscordNotification(entry, title = 'YKS Sayac') {
   if (!DISCORD_WEBHOOK_URL) return;
   const flag = entry.country === 'Turkey' || entry.country === 'Türkiye' ? '🇹🇷' : '🌍';
   const batteryIcon = entry.battery && entry.battery !== '?' ? (parseInt(entry.battery) > 50 ? '🔋' : '🔴') : '';
@@ -142,7 +142,7 @@ async function sendDiscordNotification(entry, title = 'Yeni Ziyaretçi') {
           { name: '📐 Ekran', value: `${entry.orientation && entry.orientation !== '?' ? entry.orientation : '-'}`, inline: true },
           { name: '⏰ Tarih', value: new Date(entry.time).toLocaleString('tr-TR', { timeZone: 'Europe/Istanbul', hour12: false }), inline: true },
         ],
-        footer: { text: 'Spotify Stalker · 37xw' },
+        footer: { text: title === 'Spotify Stalkeri !!!' ? 'Spotify Stalker · 37xw' : 'YKS Sayac · 37xw' },
         timestamp: entry.time,
       }]
     });
