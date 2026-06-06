@@ -21,6 +21,36 @@ if (fs.existsSync(VISITORS_FILE)) {
 
 const geoCache = {};
 
+const APPLE_DEVICES = [
+  // iPhone - key: "WxH@DPR"
+  { match: '320x568@2', model: 'iPhone SE (1. nesil)' },
+  { match: '375x667@2', model: 'iPhone 6/6s/7/8/SE (2./3. nesil)' },
+  { match: '414x736@3', model: 'iPhone 6+/6s+/7+/8+' },
+  { match: '375x812@3', model: 'iPhone X/XS/11 Pro' },
+  { match: '414x896@2', model: 'iPhone XR/11' },
+  { match: '414x896@3', model: 'iPhone XS Max/11 Pro Max' },
+  { match: '360x780@3', model: 'iPhone 12/13 mini' },
+  { match: '390x844@3', model: 'iPhone 12/12 Pro/13/13 Pro/14' },
+  { match: '428x926@3', model: 'iPhone 12 Pro Max/13 Pro Max/14 Plus' },
+  { match: '393x852@3', model: 'iPhone 14 Pro/15/15 Pro' },
+  { match: '430x932@3', model: 'iPhone 14 Pro Max/15 Plus/15 Pro Max' },
+  // iPad
+  { match: '744x1133@2', model: 'iPad Mini (6. nesil)' },
+  { match: '820x1180@2', model: 'iPad Air (4./5. nesil) / iPad (10. nesil)' },
+  { match: '834x1194@2', model: 'iPad Pro 11 (1./2./3./4. nesil)' },
+  { match: '1024x1366@2', model: 'iPad Pro 12.9 (3./4./5./6. nesil)' },
+  { match: '810x1080@2', model: 'iPad (9. nesil)' },
+];
+
+function identifyModel(vendor, model, os, sw, sh, dpr) {
+  if (vendor === 'Apple' && sw && sh && dpr) {
+    const key = `${sw}x${sh}@${Math.round(dpr)}`;
+    const found = APPLE_DEVICES.find(d => d.match === key);
+    if (found) return found.model;
+  }
+  return [vendor, model].filter(Boolean).join(' ') || '-';
+}
+
 function saveVisitors() {
   fs.writeFileSync(VISITORS_FILE, JSON.stringify(visitors, null, 2), 'utf-8');
 }
@@ -63,11 +93,15 @@ async function logVisit(req, source) {
   const device = parser.getDevice();
   const geo = await getGeoInfo(ip);
 
+  const sw = parseInt(req.query.sw);
+  const sh = parseInt(req.query.sh);
+  const dpr = parseFloat(req.query.dpr);
+
   const entry = {
     ip,
     time: new Date().toISOString(),
     device: device.type || 'desktop',
-    deviceModel: [device.vendor, device.model].filter(Boolean).join(' ') || '-',
+    deviceModel: identifyModel(device.vendor, device.model, os.name, sw, sh, dpr),
     browser: `${browser.name || '?'} ${browser.version || ''}`,
     os: `${os.name || '?'} ${os.version || ''}`,
     country: geo.country,
