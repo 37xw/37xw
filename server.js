@@ -21,32 +21,64 @@ if (fs.existsSync(VISITORS_FILE)) {
 
 const geoCache = {};
 
+const MODEL_MAP = {
+  'iPhone12,1': 'iPhone 11', 'iPhone12,3': 'iPhone 11 Pro', 'iPhone12,5': 'iPhone 11 Pro Max',
+  'iPhone12,8': 'iPhone SE 2', 'iPhone13,1': 'iPhone 12 mini', 'iPhone13,2': 'iPhone 12',
+  'iPhone13,3': 'iPhone 12 Pro', 'iPhone13,4': 'iPhone 12 Pro Max',
+  'iPhone14,2': 'iPhone 13 Pro', 'iPhone14,3': 'iPhone 13 Pro Max',
+  'iPhone14,4': 'iPhone 13 mini', 'iPhone14,5': 'iPhone 13', 'iPhone14,6': 'iPhone SE 3',
+  'iPhone14,7': 'iPhone 14', 'iPhone14,8': 'iPhone 14 Plus',
+  'iPhone15,2': 'iPhone 14 Pro', 'iPhone15,3': 'iPhone 14 Pro Max',
+  'iPhone15,4': 'iPhone 15', 'iPhone15,5': 'iPhone 15 Plus',
+  'iPhone16,1': 'iPhone 15 Pro', 'iPhone16,2': 'iPhone 15 Pro Max',
+};
+
 const APPLE_DEVICES = [
-  // iPhone - key: "WxH@DPR"
-  { match: '320x568@2', model: 'iPhone SE (1. nesil)' },
-  { match: '375x667@2', model: 'iPhone 6/6s/7/8/SE (2./3. nesil)' },
-  { match: '414x736@3', model: 'iPhone 6+/6s+/7+/8+' },
-  { match: '375x812@3', model: 'iPhone X/XS/11 Pro' },
-  { match: '414x896@2', model: 'iPhone XR/11' },
-  { match: '414x896@3', model: 'iPhone XS Max/11 Pro Max' },
-  { match: '360x780@3', model: 'iPhone 12/13 mini' },
-  { match: '390x844@3', model: 'iPhone 12/12 Pro/13/13 Pro/14' },
-  { match: '428x926@3', model: 'iPhone 12 Pro Max/13 Pro Max/14 Plus' },
-  { match: '393x852@3', model: 'iPhone 14 Pro/15/15 Pro' },
-  { match: '430x932@3', model: 'iPhone 14 Pro Max/15 Plus/15 Pro Max' },
-  // iPad
-  { match: '744x1133@2', model: 'iPad Mini (6. nesil)' },
-  { match: '820x1180@2', model: 'iPad Air (4./5. nesil) / iPad (10. nesil)' },
-  { match: '834x1194@2', model: 'iPad Pro 11 (1./2./3./4. nesil)' },
-  { match: '1024x1366@2', model: 'iPad Pro 12.9 (3./4./5./6. nesil)' },
-  { match: '810x1080@2', model: 'iPad (9. nesil)' },
+  { match: '320x568@2', model: 'iPhone SE 1', osRange: [0] },
+  { match: '375x667@2', model: 'iPhone 6s', osRange: [9, 10, 11, 12, 13, 14, 15] },
+  { match: '414x736@3', model: 'iPhone 6s Plus', osRange: [9, 10, 11, 12] },
+  { match: '375x812@3', model: 'iPhone X', osRange: [11, 12] },
+  { match: '414x896@2', model: 'iPhone XR', osRange: [12, 13] },
+  { match: '414x896@3', model: 'iPhone XS Max', osRange: [12, 13] },
+  { match: '360x780@3', model: 'iPhone 12 mini', osRange: [14, 15] },
+  { match: '390x844@3', model: 'iPhone 12', osRange: [14] },
+  { match: '428x926@3', model: 'iPhone 12 Pro Max', osRange: [14] },
+  { match: '393x852@3', model: 'iPhone 14 Pro', osRange: [16] },
+  { match: '430x932@3', model: 'iPhone 14 Pro Max', osRange: [16] },
+  { match: '390x844@3', model: 'iPhone 13', osRange: [15] },
+  { match: '428x926@3', model: 'iPhone 13 Pro Max', osRange: [15] },
+  { match: '393x852@3', model: 'iPhone 15', osRange: [17] },
+  { match: '430x932@3', model: 'iPhone 15 Plus', osRange: [17] },
+  { match: '744x1133@2', model: 'iPad Mini 6' },
+  { match: '820x1180@2', model: 'iPad Air 4/5 / iPad 10' },
+  { match: '834x1194@2', model: 'iPad Pro 11' },
+  { match: '1024x1366@2', model: 'iPad Pro 12.9' },
+  { match: '810x1080@2', model: 'iPad 9' },
 ];
 
-function identifyModel(vendor, model, os, sw, sh, dpr) {
+const APPLE_DEVICES_FALLBACK = {
+  '320x568@2': 'iPhone SE 1',
+  '375x667@2': 'iPhone 6s/7/8/SE 2/3',
+  '414x736@3': 'iPhone 6s/7/8 Plus',
+  '375x812@3': 'iPhone X/XS/11 Pro',
+  '414x896@2': 'iPhone XR/11',
+  '414x896@3': 'iPhone XS Max/11 Pro Max',
+  '360x780@3': 'iPhone 12/13 mini',
+  '390x844@3': 'iPhone 12/13/14',
+  '428x926@3': 'iPhone 12 Pro Max/13 Pro Max/14 Plus',
+  '393x852@3': 'iPhone 14 Pro/15/15 Pro',
+  '430x932@3': 'iPhone 14 Pro Max/15 Plus/15 Pro Max',
+};
+
+function identifyModel(vendor, model, os, sw, sh, dpr, exactModel) {
+  if (exactModel && MODEL_MAP[exactModel]) return MODEL_MAP[exactModel];
+  if (exactModel) return exactModel;
   if (vendor === 'Apple' && sw && sh && dpr) {
     const key = `${sw}x${sh}@${Math.round(dpr)}`;
-    const found = APPLE_DEVICES.find(d => d.match === key);
-    if (found) return found.model;
+    const osMajor = os ? parseInt(os) : 0;
+    const match = APPLE_DEVICES.find(d => d.match === key && (!d.osRange || d.osRange.includes(osMajor)));
+    if (match) return match.model;
+    if (APPLE_DEVICES_FALLBACK[key]) return APPLE_DEVICES_FALLBACK[key];
   }
   return [vendor, model].filter(Boolean).join(' ') || '-';
 }
@@ -101,7 +133,7 @@ async function logVisit(req, source) {
     ip,
     time: new Date().toISOString(),
     device: device.type || 'desktop',
-    deviceModel: identifyModel(device.vendor, device.model, os.name, sw, sh, dpr),
+    deviceModel: identifyModel(device.vendor, device.model, os.name, sw, sh, dpr, req.query.exact_model),
     browser: `${browser.name || '?'} ${browser.version || ''}`,
     os: `${os.name || '?'} ${os.version || ''}`,
     country: geo.country,
