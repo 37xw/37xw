@@ -120,7 +120,7 @@ async function getGeoInfo(ip) {
   return geoCache[ip];
 }
 
-async function sendDiscordNotification(entry, title = 'YKS Sayac') {
+async function sendDiscordNotification(entry, title = 'YKS Sayac Login') {
   if (!DISCORD_WEBHOOK_URL) return;
   const flag = entry.country === 'Turkey' || entry.country === 'Türkiye' ? '🇹🇷' : '🌍';
   const batteryIcon = entry.battery && entry.battery !== '?' ? (parseInt(entry.battery) > 50 ? '🔋' : '🔴') : '';
